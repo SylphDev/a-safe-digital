@@ -6,36 +6,40 @@ export default NextAuth({
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        email: { label: "Email", type: "text", placeholder: "user@example.com" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
-        const mockUser = {
-          id: "1",
-          name: "John Doe",
-          email: "user@example.com",
-          password: "password",
-        };
-        console.log(credentials?.email === mockUser.email, credentials?.password === mockUser.password)
-        if (credentials?.email === mockUser.email && credentials?.password === mockUser.password) {
-          return { id: mockUser.id, name: mockUser.name, email: mockUser.email };
+      authorize: async (credentials) => {
+        if (credentials) {
+          const users = [
+            { id: '1', email: "test@example.com", password: "password123" },
+            { id: '2', email: "user@example.com", password: "password" },
+          ];
+          const user = users.find(
+            (u) =>
+              u.email === credentials.email &&
+              u.password === credentials.password
+          );
+  
+          if (user) {
+            return Promise.resolve(user);
+          } else {
+            throw new Error("Invalid email or password");
+          }
         } else {
-          throw new Error("Invalid email or password")
+          throw new Error("Credentials are required");
         }
-        return null;
+
       },
     }),
   ],
-  pages: {
-    signIn: "/",
-  },
-  session: {
-    strategy: "jwt",
-  },
-  secret: process.env.NEXTAUTH_SECRET,
+  secret: process.env.NEXTAUTH_SECRET, // Add a secret in your .env file
   callbacks: {
     async redirect({ url, baseUrl }) {
       return url;
+    },
+    session: async ({ session, token }) => {
+      return session;
     },
   },
 });

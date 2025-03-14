@@ -18,7 +18,7 @@ export default function Dashboard() {
     <FullLayout>
       <div>
         <h1>Welcome to the Dashboard</h1>
-        {session && <h2>Hello, {session.user?.name}!</h2>}{" "}
+        {session && <h2>Hello, {session.user?.email}!</h2>}{" "}
         <button onClick={handleSignOut}>Sign Out</button>
       </div>
     </FullLayout>

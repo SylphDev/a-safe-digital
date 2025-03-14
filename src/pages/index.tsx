@@ -10,11 +10,13 @@ import { FormPasswordInput } from "src/components/inputs/form-password";
 import { useEffect, useState } from "react";
 import LoadingButton from "src/components/buttons/loading";
 import { useRouter } from "next/router";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { paths } from "src/router/paths";
 
 const SignIn = () => {
   const theme = useTheme();
   const router = useRouter();
+  const { data: session, status } = useSession();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>("");
   const LoginSchema = Yup.object().shape({
@@ -38,20 +40,33 @@ const SignIn = () => {
   } = methods;
   const onSubmit = handleSubmit(async (data) => {
     setLoading(true);
-    setError("");
+    setTimeout(async () => {
+      setError("");
 
-    const res = await signIn("credentials", {
-      email: data.email,
-      password: data.password,
-      redirect: true,
-      callbackUrl: "/dashboard",
-    });
-  
-    if (res?.error) {
-      setError(error);
-      setLoading(false);
-    }
+      const res = await signIn("credentials", {
+        email: data.email,
+        password: data.password,
+        redirect: false,
+      });
+
+      if (res?.error) {
+        setError(res?.error);
+        setLoading(false);
+      }
+      if (res) {
+        if (res.ok) {
+          setLoading(false);
+          router.push(paths.dashboard);
+        }
+      }
+    }, 1000);
   });
+  useEffect(() => {
+    if (status === "authenticated") {
+      setLoading(false);
+      router.push(paths.dashboard);
+    }
+  }, [status, router]);
   return (
     <FullLayout>
       <SignInLayout>
