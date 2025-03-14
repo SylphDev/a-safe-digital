@@ -1,7 +1,5 @@
 import { alpha } from "@mui/material/styles";
 
-// ----------------------------------------------------------------------
-
 export type ColorSchema =
   | "primary"
   | "secondary"
@@ -53,7 +51,7 @@ const GREY = {
 const PRIMARY = {
   lighter: "#E8F5E9",
   light: "#81C784",
-  main: "#4CAF50",
+  main: "#40c057",
   dark: "#388E3C",
   darker: "#1B5E20",
   contrastText: "#FFFFFF",

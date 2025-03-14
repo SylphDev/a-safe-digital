@@ -13,13 +13,12 @@ import {
   ThemeProvider as MuiThemeProvider,
   ThemeOptions,
 } from "@mui/material/styles";
-import { palette } from "./palette"; // Your palette function
-import { typography } from "./typography"; // Your typography configuration
-import { darkMode } from "./dark-mode"; // Your dark mode overrides
+import { palette } from "./palette";
+import { typography } from "./typography";
+import { darkMode } from "./dark-mode";
+import { componentsOverrides } from "./components";
 
-// ----------------------------------------------------------------------
-
-type ThemeMode = "light" | "dark";
+export type ThemeMode = "light" | "dark";
 
 interface ThemeContextType {
   mode: ThemeMode;
@@ -29,13 +28,21 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [mode, setMode] = useState<ThemeMode>(() => {
-    const savedMode = localStorage.getItem("themeMode") as ThemeMode;
-    return savedMode || "light";
-  });
+  const [mode, setMode] = useState<ThemeMode>("light");
 
   useEffect(() => {
-    localStorage.setItem("themeMode", mode);
+    if (typeof window !== "undefined") {
+      const savedMode = localStorage.getItem("themeMode") as ThemeMode;
+      if (savedMode) {
+        setMode(savedMode);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      localStorage.setItem("themeMode", mode);
+    }
   }, [mode]);
 
   const toggleMode = () => {
@@ -59,6 +66,8 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const theme = createTheme(memoizedValue as ThemeOptions);
+
+  theme.components = componentsOverrides(theme);
 
   return (
     <ThemeContext.Provider value={{ mode, toggleMode }}>

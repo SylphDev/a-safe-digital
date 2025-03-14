@@ -1,5 +1,4 @@
-// ----------------------------------------------------------------------
-import '@fontsource-variable/open-sans';
+import "@fontsource-variable/open-sans";
 
 export function remToPx(value: string) {
   return Math.round(parseFloat(value) * 16);
@@ -21,30 +20,28 @@ export function responsiveFontSizes({
   lg: number;
 }) {
   return {
-    '@media (max-width:600px)': {
+    "@media (max-width:600px)": {
       fontSize: pxToRem(xs),
     },
-    '@media (min-width:600px)': {
+    "@media (min-width:600px)": {
       fontSize: pxToRem(sm),
     },
-    '@media (min-width:900px)': {
+    "@media (min-width:900px)": {
       fontSize: pxToRem(md),
     },
-    '@media (min-width:1200px)': {
+    "@media (min-width:1200px)": {
       fontSize: pxToRem(lg),
     },
   };
 }
 
-declare module '@mui/material/styles' {
+declare module "@mui/material/styles" {
   interface TypographyVariants {
-    fontWeightSemiBold: React.CSSProperties['fontWeight'];
+    fontWeightSemiBold: React.CSSProperties["fontWeight"];
   }
 }
 
-const primaryFont = 'Open Sans Variable, sans-serif';
-
-// ----------------------------------------------------------------------
+const primaryFont = "Open Sans Variable, sans-serif";
 
 export const typography = {
   fontFamily: primaryFont,
@@ -56,7 +53,7 @@ export const typography = {
     fontWeight: 800,
     lineHeight: 80 / 64,
     fontSize: pxToRem(40),
-    // ...responsiveFontSizes({ sm: 52, md: 58, lg: 64 }),
+    ...responsiveFontSizes({ xs: 25, sm: 25, md: 35, lg: 40 }),
   },
   h2: {
     fontWeight: 800,
@@ -115,12 +112,12 @@ export const typography = {
     fontWeight: 700,
     lineHeight: 1.5,
     fontSize: pxToRem(12),
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   button: {
     fontWeight: 700,
     lineHeight: 24 / 14,
     fontSize: pxToRem(14),
-    textTransform: 'unset',
+    textTransform: "unset",
   },
 } as const;
