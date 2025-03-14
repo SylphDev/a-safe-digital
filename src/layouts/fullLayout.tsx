@@ -40,7 +40,7 @@ const FullLayout = ({ children }: props) => {
           padding: "10px",
         }}
       >
-        {status === "authenticated" && router.pathname !== paths.signin && (
+        {status === "authenticated" && (
           <Stack sx={{ height: "100%", marginRight: "20px" }}>
             <SignOut onClick={handleSignOut} />
           </Stack>

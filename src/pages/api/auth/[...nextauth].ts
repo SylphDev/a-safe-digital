@@ -9,16 +9,18 @@ export default NextAuth({
         email: { label: "Email", type: "text", placeholder: "user@example.com" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         const mockUser = {
           id: "1",
           name: "John Doe",
           email: "user@example.com",
           password: "password",
         };
-
+        console.log(credentials?.email === mockUser.email, credentials?.password === mockUser.password)
         if (credentials?.email === mockUser.email && credentials?.password === mockUser.password) {
           return { id: mockUser.id, name: mockUser.name, email: mockUser.email };
+        } else {
+          throw new Error("Invalid email or password")
         }
         return null;
       },
@@ -31,18 +33,9 @@ export default NextAuth({
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
-
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token.id = user.id; 
-        token.name = user.name;
-        token.email = user.email;
-      }
-      return token;
-    },
     async redirect({ url, baseUrl }) {
-      return "/dashboard";
+      return url;
     },
   },
 });

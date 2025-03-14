@@ -40,7 +40,6 @@ const SignIn = () => {
     setLoading(true);
     setError("");
 
-
     const res = await signIn("credentials", {
       email: data.email,
       password: data.password,
@@ -49,10 +48,9 @@ const SignIn = () => {
     });
   
     if (res?.error) {
-      setError("Invalid email or password");
-    } 
-
-    setLoading(false);
+      setError(error);
+      setLoading(false);
+    }
   });
   return (
     <FullLayout>

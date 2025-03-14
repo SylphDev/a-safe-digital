@@ -1,2 +1,30 @@
-node_modules
+# Ignore environment variable files
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# Ignore build and cache directories
 .next
+node_modules
+dist
+out
+
+# Ignore debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Ignore IDE and editor files
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Ignore OS-specific files
+.DS_Store
+Thumbs.db
