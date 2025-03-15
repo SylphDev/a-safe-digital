@@ -1,6 +1,6 @@
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import FullLayout from "src/layouts/fullLayout";
 import axios from "axios";
 import { Stack, Typography, useTheme } from "@mui/material";
@@ -15,13 +15,23 @@ import SelectFilter from "src/components/inputs/select-filter";
 import { UserData } from "src/data/mockUser";
 import { usePaginatedData } from "src/hooks/usePaginatedData";
 import dynamic from "next/dynamic";
+import LoadingIcon from "src/components/loading-icon";
 
-const CustomLineGraph = dynamic(() => import("src/components/graphs/line"), { ssr: false });
-const CustomBarGraph = dynamic(() => import("src/components/graphs/bar"), { ssr: false });
-const CustomSemiCircularGraph = dynamic(() => import("src/components/graphs/semi-circular"), { ssr: false });
-const TableComponent = dynamic(() => import("src/components/table"), { ssr: false });
+const CustomLineGraph = dynamic(() => import("src/components/graphs/line"), {
+  ssr: false,
+});
+const CustomBarGraph = dynamic(() => import("src/components/graphs/bar"), {
+  ssr: false,
+});
+const CustomSemiCircularGraph = dynamic(
+  () => import("src/components/graphs/semi-circular"),
+  { ssr: false }
+);
+const TableComponent = dynamic(() => import("src/components/table"), {
+  ssr: false,
+});
 
-const Dashboard = () =>  {
+const Dashboard = () => {
   const theme = useTheme();
   const router = useRouter();
   const isTablet = useMediaQuery(theme.breakpoints.up("md"));
@@ -116,14 +126,32 @@ const Dashboard = () =>  {
           >
             Age Distribution of your Users
           </Typography>
-          <Stack sx={{ width: "100%", height: "300px" }}>
+          <Stack
+            sx={{
+              width: "100%",
+              height: "300px",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             {!loadingGraphs && (
-              <CustomLineGraph
-                data={ageDistribution}
-                tooltipLabelCallback={(tooltipItem) =>
-                  `Users aged ${tooltipItem.label}: ${tooltipItem.raw}`
+              <Suspense
+                fallback={
+                  <LoadingIcon
+                    size={8}
+                    border={0.9}
+                    firstColor={theme.palette.primary.main}
+                    secondColor={theme.palette.primary.main}
+                  />
                 }
-              />
+              >
+                <CustomLineGraph
+                  data={ageDistribution}
+                  tooltipLabelCallback={(tooltipItem) =>
+                    `Users aged ${tooltipItem.label}: ${tooltipItem.raw}`
+                  }
+                />
+              </Suspense>
             )}
           </Stack>
         </Stack>
@@ -152,15 +180,32 @@ const Dashboard = () =>  {
               Country Distribution of your Users
             </Typography>
             <Stack
-              sx={{ width: "100%", height: "300px", marginBottom: "20px" }}
+              sx={{
+                width: "100%",
+                height: "300px",
+                marginBottom: "20px",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
               {!loadingGraphs && (
-                <CustomBarGraph
-                  data={usersByCountry}
-                  tooltipLabelCallback={(tooltipItem) =>
-                    `Users living in ${tooltipItem.label}: ${tooltipItem.raw}`
+                <Suspense
+                  fallback={
+                    <LoadingIcon
+                      size={8}
+                      border={0.9}
+                      firstColor={theme.palette.primary.main}
+                      secondColor={theme.palette.primary.main}
+                    />
                   }
-                />
+                >
+                  <CustomBarGraph
+                    data={usersByCountry}
+                    tooltipLabelCallback={(tooltipItem) =>
+                      `Users living in ${tooltipItem.label}: ${tooltipItem.raw}`
+                    }
+                  />
+                </Suspense>
               )}
             </Stack>
           </RoundedBox>
@@ -180,15 +225,32 @@ const Dashboard = () =>  {
               Premium Distribution of your Users
             </Typography>
             <Stack
-              sx={{ width: "100%", height: "300px", marginBottom: "20px" }}
+              sx={{
+                width: "100%",
+                height: "300px",
+                marginBottom: "20px",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
             >
               {!loadingGraphs && (
-                <CustomSemiCircularGraph
-                  data={premiumDistribution}
-                  tooltipLabelCallback={(tooltipItem) =>
-                    `${tooltipItem.label} users: ${tooltipItem.raw}`
+                <Suspense
+                  fallback={
+                    <LoadingIcon
+                      size={8}
+                      border={0.9}
+                      firstColor={theme.palette.primary.main}
+                      secondColor={theme.palette.primary.main}
+                    />
                   }
-                />
+                >
+                  <CustomSemiCircularGraph
+                    data={premiumDistribution}
+                    tooltipLabelCallback={(tooltipItem) =>
+                      `${tooltipItem.label} users: ${tooltipItem.raw}`
+                    }
+                  />
+                </Suspense>
               )}
             </Stack>
           </RoundedBox>
@@ -200,7 +262,7 @@ const Dashboard = () =>  {
         >
           Users
         </Typography>
-        <Stack sx={{ width: "100%", marginBottom: "20px" }}>
+        <Stack sx={{ width: "100%" }}>
           <Stack
             sx={{
               flexDirection: !isSmallScreen ? "column" : "row",
@@ -268,7 +330,7 @@ const Dashboard = () =>  {
       </Stack>
     </FullLayout>
   );
-}
+};
 
 export default Dashboard;
 

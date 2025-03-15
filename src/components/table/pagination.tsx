@@ -23,7 +23,7 @@ const Pagination = ({ page, totalPages, onChangePage }: props) => {
       justifyContent={"center"}
       sx={{
         width: "100%",
-        marginTop: "10px",
+        marginTop: "20px",
       }}
     >
       <button
