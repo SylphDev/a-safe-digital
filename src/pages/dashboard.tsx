@@ -140,8 +140,8 @@ const Dashboard = () => {
                   <LoadingIcon
                     size={8}
                     border={0.9}
-                    firstColor={theme.palette.primary.main}
-                    secondColor={theme.palette.primary.main}
+                    firstColor={theme.palette.primary.light}
+                    secondColor={theme.palette.primary.light}
                   />
                 }
               >
@@ -152,6 +152,14 @@ const Dashboard = () => {
                   }
                 />
               </Suspense>
+            )}
+            {loadingGraphs && (
+              <LoadingIcon
+                size={8}
+                border={0.9}
+                firstColor={theme.palette.primary.light}
+                secondColor={theme.palette.primary.light}
+              />
             )}
           </Stack>
         </Stack>
@@ -194,8 +202,8 @@ const Dashboard = () => {
                     <LoadingIcon
                       size={8}
                       border={0.9}
-                      firstColor={theme.palette.primary.main}
-                      secondColor={theme.palette.primary.main}
+                      firstColor={theme.palette.primary.light}
+                      secondColor={theme.palette.primary.light}
                     />
                   }
                 >
@@ -206,6 +214,14 @@ const Dashboard = () => {
                     }
                   />
                 </Suspense>
+              )}
+              {loadingGraphs && (
+                <LoadingIcon
+                  size={8}
+                  border={0.9}
+                  firstColor={theme.palette.primary.light}
+                  secondColor={theme.palette.primary.light}
+                />
               )}
             </Stack>
           </RoundedBox>
@@ -239,8 +255,8 @@ const Dashboard = () => {
                     <LoadingIcon
                       size={8}
                       border={0.9}
-                      firstColor={theme.palette.primary.main}
-                      secondColor={theme.palette.primary.main}
+                      firstColor={theme.palette.primary.light}
+                      secondColor={theme.palette.primary.light}
                     />
                   }
                 >
@@ -251,6 +267,14 @@ const Dashboard = () => {
                     }
                   />
                 </Suspense>
+              )}
+              {loadingGraphs && (
+                <LoadingIcon
+                  size={8}
+                  border={0.9}
+                  firstColor={theme.palette.primary.light}
+                  secondColor={theme.palette.primary.light}
+                />
               )}
             </Stack>
           </RoundedBox>
