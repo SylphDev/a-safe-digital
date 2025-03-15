@@ -45,7 +45,10 @@ export default NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async redirect({ url, baseUrl }) {
-      return url;
+      if (url.startsWith("/dashboard")) {
+        return `${baseUrl}${url}`;
+      }
+      return baseUrl;
     },
     session: async ({ session, token }) => {
       if (session.user) {
