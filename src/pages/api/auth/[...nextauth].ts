@@ -12,15 +12,25 @@ export default NextAuth({
       authorize: async (credentials) => {
         if (credentials) {
           const users = [
-            { id: '1', email: "test@example.com", password: "password123" },
-            { id: '2', email: "user@example.com", password: "password" },
+            {
+              id: "1",
+              email: "test@example.com",
+              password: "password123",
+              name: "John Doe",
+            },
+            {
+              id: "2",
+              email: "user@example.com",
+              password: "password",
+              name: "Jane Doe",
+            },
           ];
           const user = users.find(
             (u) =>
               u.email === credentials.email &&
               u.password === credentials.password
           );
-  
+
           if (user) {
             return Promise.resolve(user);
           } else {
@@ -29,7 +39,6 @@ export default NextAuth({
         } else {
           throw new Error("Credentials are required");
         }
-
       },
     }),
   ],
@@ -39,6 +48,9 @@ export default NextAuth({
       return url;
     },
     session: async ({ session, token }) => {
+      if (session.user) {
+        session.user.name = token.name;
+      }
       return session;
     },
   },

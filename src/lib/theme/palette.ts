@@ -167,7 +167,7 @@ export function palette(mode: "light" | "dark") {
       medium: "#DBE6EA",
       dark: "#ebf1f3",
       strong: "#FFFFFF",
-      green: COMMON.common.white,
+      green: PRIMARY.main,
     },
     background: {
       paper: "#1F232B",

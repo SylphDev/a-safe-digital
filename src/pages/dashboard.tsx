@@ -4,12 +4,13 @@ import { useState, useEffect } from "react";
 import { signOut } from "next-auth/react";
 import FullLayout from "src/layouts/fullLayout";
 import axios from "axios";
-import { Stack, useTheme } from "@mui/material";
+import { Stack, Typography, useTheme } from "@mui/material";
 import { useProtectedRoute } from "src/hooks/useProtectedRoute";
 import { VisibilityState } from "@tanstack/table-core";
 import { useColumns } from "src/hooks/useColumns";
 import TableComponent from "src/components/table";
 import { useMediaQuery } from "@mui/system";
+import CustomLineGraph from "src/components/graphs/line";
 
 interface UserData {
   id: number;
@@ -32,6 +33,9 @@ export default function Dashboard() {
   };
   const { session } = useProtectedRoute();
   const [users, setUsers] = useState<UserData[]>([]);
+  const [ageDistribution, setAgeDistribution] = useState<
+    Record<number, number>
+  >({});
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
   const userColumns = useColumns().columns;
@@ -40,6 +44,13 @@ export default function Dashboard() {
     useState<VisibilityState>(defaultVisibility);
 
   useEffect(() => {
+    const fetchAgeDistribution = async () => {
+      const res = await axios.get("/api/age-distribution");
+      setAgeDistribution(res.data);
+    };
+    fetchAgeDistribution();
+  }, []);
+  useEffect(() => {
     const fetchUsers = async () => {
       const res = await axios.get(`/api/users?page=${page}&limit=10`);
       setUsers(res.data.users);
@@ -47,6 +58,9 @@ export default function Dashboard() {
     };
     fetchUsers();
   }, [page]);
+  useEffect(() => {
+    console.log({ ageDistribution });
+  }, [ageDistribution]);
 
   useEffect(() => {
     setVisibility(defaultVisibility);
@@ -55,18 +69,41 @@ export default function Dashboard() {
   return (
     <FullLayout>
       <Stack>
-        <h1>Welcome to your Dashboard</h1>
-        <TableComponent
-          columns={columns}
-          data={users}
-          renderSubComponent={() => {}}
-          visibility={visibility}
-          onChangeVisibility={setVisibility}
-          canExpand={() => false}
-          page={page}
-          totalPages={totalPages}
-          onChangePage={setPage}
-        />
+        <Typography
+          variant="h3"
+          color={theme.palette.text.strong}
+          sx={{ marginBottom: "10px" }}
+        >
+          Age Distribution of your Users
+        </Typography>
+        <Stack sx={{ width: "100%", marginBottom: "20px" }}>
+          <CustomLineGraph
+            data={ageDistribution}
+            tooltipLabelCallback={(tooltipItem) =>
+              `Users aged ${tooltipItem.label}: ${tooltipItem.raw}`
+            }
+          />
+        </Stack>
+        <Typography
+          variant="h3"
+          color={theme.palette.text.strong}
+          sx={{ marginBottom: "10px" }}
+        >
+          Users
+        </Typography>
+        <Stack sx={{ width: "100%", marginBottom: "20px" }}>
+          <TableComponent
+            columns={columns}
+            data={users}
+            renderSubComponent={() => {}}
+            visibility={visibility}
+            onChangeVisibility={setVisibility}
+            canExpand={() => false}
+            page={page}
+            totalPages={totalPages}
+            onChangePage={setPage}
+          />
+        </Stack>
       </Stack>
     </FullLayout>
   );

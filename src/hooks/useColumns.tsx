@@ -10,31 +10,31 @@ export const useColumns = () => {
     {
       id: 'id',
       accessorFn: (row) => row.id,
-      header: () => <TableHeader color={theme.palette.primary.main} header={'Id'} />,
+      header: () => <TableHeader color={theme.palette.common.white} header={'Id'} />,
       cell: (info) => <Cell text={info.getValue() as string} maxWidth={75} />,
     },
     {
       id: 'name',
       accessorFn: (row) => row.name,
-      header: () => <TableHeader color={theme.palette.primary.main} header={'Name'} />,
+      header: () => <TableHeader color={theme.palette.common.white} header={'Name'} />,
       cell: (info) => <Cell text={info.getValue() as string} maxWidth={75} />,
     },
     {
       id: 'email',
       accessorFn: (row) => row.email,
-      header: () => <TableHeader color={theme.palette.primary.main} header={'Email'} />,
+      header: () => <TableHeader color={theme.palette.common.white} header={'Email'} />,
       cell: (info) => <Cell text={info.getValue() as string} maxWidth={75} />,
     },
     {
       id: 'age',
       accessorFn: (row) => row.age,
-      header: () => <TableHeader color={theme.palette.primary.main} header={'Age'} />,
+      header: () => <TableHeader color={theme.palette.common.white} header={'Age'} />,
       cell: (info) => <Cell text={info.getValue() as string} maxWidth={75} />,
     },
     {
       id: 'country',
       accessorFn: (row) => row.country,
-      header: () => <TableHeader color={theme.palette.primary.main} header={'Country'} />,
+      header: () => <TableHeader color={theme.palette.common.white} header={'Country'} />,
       cell: (info) => <Cell text={info.getValue() as string} maxWidth={75} />,
     },
   ];

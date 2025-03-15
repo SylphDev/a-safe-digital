@@ -38,7 +38,7 @@ const FullLayout = ({
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: theme.palette.background.default,
         padding: fullPadding
           ? "0px"
           : `${isSmallScreen ? "10px" : isTablet ? "20px" : "30px"}`,
@@ -62,7 +62,7 @@ const FullLayout = ({
             router.pathname !== "/" &&
             session &&
             session.user && (
-              <Typography variant="h6">Hello, {session.user.email}!</Typography>
+              <Typography variant="h6">Hello, {session.user.name}!</Typography>
             )}
         </Stack>
         <Stack

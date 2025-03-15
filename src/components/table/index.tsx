@@ -81,7 +81,7 @@ const TableComponent = ({
               style={{
                 backgroundColor:
                   type === 'primary'
-                    ? theme.palette.background.default
+                    ? theme.palette.primary.dark
                     : theme.palette.background.default,
               }}
             >

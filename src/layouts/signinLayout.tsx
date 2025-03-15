@@ -24,7 +24,7 @@ const SignInLayout = ({ children }: props) => {
           width: "50%",
           height: "100%",
           display: isSmallScreen ? "none" : "flex",
-          backgroundColor: theme.palette.background.default,
+          backgroundColor: theme.palette.background.paper,
           alignItems: "center",
           justifyContent: "center",
         }}
