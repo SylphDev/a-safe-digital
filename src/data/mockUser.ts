@@ -4,6 +4,7 @@ export type UserData = {
   email: string;
   age: number;
   country: string;
+  premium: boolean;
 };
 
 export const users: UserData[] = Array.from({ length: 1000 }, (_, i) => ({
@@ -14,4 +15,5 @@ export const users: UserData[] = Array.from({ length: 1000 }, (_, i) => ({
   country: ["USA", "Canada", "UK", "Germany", "France"][
     Math.floor(Math.random() * 5)
   ],
+  premium: Math.random() < 0.5,
 }));

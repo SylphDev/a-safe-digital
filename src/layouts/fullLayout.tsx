@@ -20,10 +20,9 @@ const FullLayout = ({
   fullPadding = false,
 }: props) => {
   const theme = useTheme();
-  const { session } = useProtectedRoute();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
   const isTablet = useMediaQuery(theme.breakpoints.up("sm"));
-  const { status } = useProtectedRoute();
+  const { status, session } = useProtectedRoute();
   const router = useRouter();
   const handleSignOut = async () => {
     await signOut({ redirect: false });
@@ -73,8 +72,8 @@ const FullLayout = ({
           }}
         >
           {status === "authenticated" && router.pathname !== "/" && (
-            <Stack sx={{ height: "100%", marginRight: "20px" }}>
-              <SignOut onClick={handleSignOut} />
+            <Stack sx={{ height: "100%", marginRight: "20px", width: '65px' }}>
+              <SignOut onClick={handleSignOut} status={status} />
             </Stack>
           )}
           <ThemeToggle />

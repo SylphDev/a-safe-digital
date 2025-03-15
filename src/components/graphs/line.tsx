@@ -15,12 +15,7 @@ const CustomLineGraph = ({ data, tooltipLabelCallback }: props) => {
   const bgColor: string = "#40c057";
 
   return (
-    <Stack
-      direction={"column"}
-      width={"100%"}
-      height={"100%"}
-      sx={{ padding: "20px" }}
-    >
+    <Stack direction={"column"} width={"100%"} height={"100%"}>
       <Box style={{ height: "340px", width: "100%" }}>
         <Line
           id="agesChart"
@@ -86,7 +81,9 @@ const CustomLineGraph = ({ data, tooltipLabelCallback }: props) => {
               tooltip: {
                 callbacks: {
                   title: () => "",
-                  label: tooltipLabelCallback || ((tooltipItem) => `Value: ${tooltipItem.raw}`),
+                  label:
+                    tooltipLabelCallback ||
+                    ((tooltipItem) => `Value: ${tooltipItem.raw}`),
                 },
                 displayColors: false,
               },

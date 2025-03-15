@@ -11,6 +11,8 @@ import { useColumns } from "src/hooks/useColumns";
 import TableComponent from "src/components/table";
 import { useMediaQuery } from "@mui/system";
 import CustomLineGraph from "src/components/graphs/line";
+import CustomBarGraph from "src/components/graphs/bar";
+import CustomSemiCircularGraph from "src/components/graphs/semi-circular";
 
 interface UserData {
   id: number;
@@ -30,11 +32,17 @@ export default function Dashboard() {
     email: true,
     age: isSmallScreen,
     country: isTablet,
+    premium: isTablet,
   };
-  const { session } = useProtectedRoute();
   const [users, setUsers] = useState<UserData[]>([]);
   const [ageDistribution, setAgeDistribution] = useState<
     Record<number, number>
+  >({});
+  const [usersByCountry, setUsersByCountry] = useState<Record<string, number>>(
+    {}
+  );
+  const [premiumDistribution, setPremiumDistribution] = useState<
+    Record<string, number>
   >({});
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(1);
@@ -51,6 +59,20 @@ export default function Dashboard() {
     fetchAgeDistribution();
   }, []);
   useEffect(() => {
+    const fetchUsersByCountry = async () => {
+      const res = await axios.get("/api/users-by-country");
+      setUsersByCountry(res.data);
+    };
+    fetchUsersByCountry();
+  }, []);
+  useEffect(() => {
+    const fetchPremiumDistribution = async () => {
+      const res = await axios.get("/api/premium-users");
+      setPremiumDistribution(res.data);
+    };
+    fetchPremiumDistribution();
+  }, []);
+  useEffect(() => {
     const fetchUsers = async () => {
       const res = await axios.get(`/api/users?page=${page}&limit=10`);
       setUsers(res.data.users);
@@ -58,9 +80,6 @@ export default function Dashboard() {
     };
     fetchUsers();
   }, [page]);
-  useEffect(() => {
-    console.log({ ageDistribution });
-  }, [ageDistribution]);
 
   useEffect(() => {
     setVisibility(defaultVisibility);
@@ -76,13 +95,54 @@ export default function Dashboard() {
         >
           Age Distribution of your Users
         </Typography>
-        <Stack sx={{ width: "100%", marginBottom: "20px" }}>
+        <Stack sx={{ width: "100%", marginBottom: "40px" }}>
           <CustomLineGraph
             data={ageDistribution}
             tooltipLabelCallback={(tooltipItem) =>
               `Users aged ${tooltipItem.label}: ${tooltipItem.raw}`
             }
           />
+        </Stack>
+        <Stack
+          sx={{
+            width: "100%",
+            marginBottom: "20px",
+            flexDirection: isTablet ? "row" : "column",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Stack
+            sx={{
+              width: isTablet ? "47%" : "100%",
+              marginBottom: isTablet ? "0px" : "20px",
+            }}
+          >
+            <Typography variant="h3" color={theme.palette.text.strong}>
+              Country Distribution of your Users
+            </Typography>
+            <Stack sx={{ width: "100%", marginBottom: "20px" }}>
+              <CustomBarGraph
+                data={usersByCountry}
+                tooltipLabelCallback={(tooltipItem) =>
+                  `Users living in ${tooltipItem.label}: ${tooltipItem.raw}`
+                }
+              />
+            </Stack>
+          </Stack>
+          <Stack sx={{ width: isTablet ? "47%" : "100%" }}>
+            <Typography variant="h3" color={theme.palette.text.strong}>
+              Premium Distribution of your Users
+            </Typography>
+            <Stack sx={{ width: "100%", marginBottom: "20px" }}>
+              <CustomSemiCircularGraph
+                data={premiumDistribution}
+                tooltipLabelCallback={(tooltipItem) =>
+                  `${tooltipItem.label} users: ${tooltipItem.raw}`
+                }
+              />
+            </Stack>
+          </Stack>
         </Stack>
         <Typography
           variant="h3"
@@ -109,7 +169,6 @@ export default function Dashboard() {
   );
 }
 
-// Protect this page from unauthenticated users
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);
 

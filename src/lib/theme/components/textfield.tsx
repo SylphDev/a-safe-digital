@@ -2,8 +2,6 @@ import { Components, Theme } from "@mui/material/styles";
 import { inputBaseClasses } from "@mui/material/InputBase";
 import { inputLabelClasses } from "@mui/material/InputLabel";
 
-// ----------------------------------------------------------------------
-
 export function textField(theme: Theme): Components {
   const color = {
     input: theme.palette.text.strong,
