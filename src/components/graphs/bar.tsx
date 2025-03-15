@@ -1,6 +1,8 @@
 import { Box, Stack, useTheme } from "@mui/material";
 import { Chart, LinearScale, CategoryScale, BarElement, TooltipItem } from "chart.js/auto";
-import { Bar } from "react-chartjs-2";
+import dynamic from "next/dynamic";
+
+const Bar = dynamic(() => import("react-chartjs-2").then((mod) => mod.Bar), { ssr: false });
 
 Chart.register(LinearScale, CategoryScale, BarElement);
 
@@ -15,7 +17,7 @@ const CustomBarGraph = ({ data, tooltipLabelCallback }: Props) => {
 
   return (
     <Stack direction="column" width="100%" height="100%">
-      <Box style={{ height: "340px", width: "100%" }}>
+      <Box style={{ height: "100%", width: "100%" }}>
         <Bar
           data={{
             labels: Object.keys(data),

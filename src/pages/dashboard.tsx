@@ -1,29 +1,29 @@
 import { GetServerSidePropsContext } from "next";
 import { getSession } from "next-auth/react";
 import { useState, useEffect } from "react";
-import { signOut } from "next-auth/react";
 import FullLayout from "src/layouts/fullLayout";
 import axios from "axios";
 import { Stack, Typography, useTheme } from "@mui/material";
-import { useProtectedRoute } from "src/hooks/useProtectedRoute";
 import { VisibilityState } from "@tanstack/table-core";
 import { useColumns } from "src/hooks/useColumns";
-import TableComponent from "src/components/table";
 import { useMediaQuery } from "@mui/system";
-import CustomLineGraph from "src/components/graphs/line";
-import CustomBarGraph from "src/components/graphs/bar";
-import CustomSemiCircularGraph from "src/components/graphs/semi-circular";
+import { useRouter } from "next/router";
+import { paths } from "src/router/paths";
+import RoundedBox from "src/components/box/rounded";
+import TextFilter from "src/components/inputs/text-filter";
+import SelectFilter from "src/components/inputs/select-filter";
+import { UserData } from "src/data/mockUser";
+import { usePaginatedData } from "src/hooks/usePaginatedData";
+import dynamic from "next/dynamic";
 
-interface UserData {
-  id: number;
-  name: string;
-  email: string;
-  age: number;
-  country: string;
-}
+const CustomLineGraph = dynamic(() => import("src/components/graphs/line"), { ssr: false });
+const CustomBarGraph = dynamic(() => import("src/components/graphs/bar"), { ssr: false });
+const CustomSemiCircularGraph = dynamic(() => import("src/components/graphs/semi-circular"), { ssr: false });
+const TableComponent = dynamic(() => import("src/components/table"), { ssr: false });
 
-export default function Dashboard() {
+const Dashboard = () =>  {
   const theme = useTheme();
+  const router = useRouter();
   const isTablet = useMediaQuery(theme.breakpoints.up("md"));
   const isSmallScreen = useMediaQuery(theme.breakpoints.up("sm"));
   const defaultVisibility: VisibilityState = {
@@ -34,7 +34,9 @@ export default function Dashboard() {
     country: isTablet,
     premium: isTablet,
   };
-  const [users, setUsers] = useState<UserData[]>([]);
+  const [nameEmail, setNameEmail] = useState<string>("");
+  const [loadingGraphs, setLoadingGraphs] = useState<boolean>(false);
+  const [premium, setPremium] = useState<"premium" | "free" | "all">("all");
   const [ageDistribution, setAgeDistribution] = useState<
     Record<number, number>
   >({});
@@ -45,41 +47,48 @@ export default function Dashboard() {
     Record<string, number>
   >({});
   const [page, setPage] = useState(0);
-  const [totalPages, setTotalPages] = useState(1);
   const userColumns = useColumns().columns;
   const [columns, setColumns] = useState(userColumns);
   const [visibility, setVisibility] =
     useState<VisibilityState>(defaultVisibility);
-
+  const onChangePremium = (e: any) => {
+    setPage(0);
+    setPremium(e);
+  };
+  const onChangeNameEmail = (e: any) => {
+    setPage(0);
+    setNameEmail(e);
+  };
+  const {
+    data: users,
+    loading,
+    totalPages,
+    setLoading,
+  } = usePaginatedData<UserData>("/api/users", {
+    page,
+    limit: 10,
+    search: nameEmail,
+    premium: premium !== "all" ? premium === "premium" : undefined,
+  });
   useEffect(() => {
-    const fetchAgeDistribution = async () => {
-      const res = await axios.get("/api/age-distribution");
-      setAgeDistribution(res.data);
+    const fetchDashboardData = async () => {
+      setLoadingGraphs(true);
+      try {
+        const [ageRes, countryRes, premiumRes] = await Promise.all([
+          axios.get("/api/age-distribution"),
+          axios.get("/api/users-by-country"),
+          axios.get("/api/premium-users"),
+        ]);
+        setAgeDistribution(ageRes.data);
+        setUsersByCountry(countryRes.data);
+        setPremiumDistribution(premiumRes.data);
+      } catch (error) {
+        router.push(paths.signin);
+      }
+      setLoadingGraphs(false);
     };
-    fetchAgeDistribution();
+    fetchDashboardData();
   }, []);
-  useEffect(() => {
-    const fetchUsersByCountry = async () => {
-      const res = await axios.get("/api/users-by-country");
-      setUsersByCountry(res.data);
-    };
-    fetchUsersByCountry();
-  }, []);
-  useEffect(() => {
-    const fetchPremiumDistribution = async () => {
-      const res = await axios.get("/api/premium-users");
-      setPremiumDistribution(res.data);
-    };
-    fetchPremiumDistribution();
-  }, []);
-  useEffect(() => {
-    const fetchUsers = async () => {
-      const res = await axios.get(`/api/users?page=${page}&limit=10`);
-      setUsers(res.data.users);
-      setTotalPages(res.data.totalPages);
-    };
-    fetchUsers();
-  }, [page]);
 
   useEffect(() => {
     setVisibility(defaultVisibility);
@@ -88,20 +97,35 @@ export default function Dashboard() {
   return (
     <FullLayout>
       <Stack>
-        <Typography
-          variant="h3"
-          color={theme.palette.text.strong}
-          sx={{ marginBottom: "10px" }}
+        <Stack
+          sx={{
+            width: "100%",
+            marginBottom: "40px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            backgroundColor: theme.palette.background.paper,
+            padding: "20px",
+          }}
         >
-          Age Distribution of your Users
-        </Typography>
-        <Stack sx={{ width: "100%", marginBottom: "40px" }}>
-          <CustomLineGraph
-            data={ageDistribution}
-            tooltipLabelCallback={(tooltipItem) =>
-              `Users aged ${tooltipItem.label}: ${tooltipItem.raw}`
-            }
-          />
+          <Typography
+            variant="h3"
+            color={theme.palette.text.strong}
+            sx={{ marginBottom: "10px" }}
+          >
+            Age Distribution of your Users
+          </Typography>
+          <Stack sx={{ width: "100%", height: "300px" }}>
+            {!loadingGraphs && (
+              <CustomLineGraph
+                data={ageDistribution}
+                tooltipLabelCallback={(tooltipItem) =>
+                  `Users aged ${tooltipItem.label}: ${tooltipItem.raw}`
+                }
+              />
+            )}
+          </Stack>
         </Stack>
         <Stack
           sx={{
@@ -112,37 +136,62 @@ export default function Dashboard() {
             justifyContent: "space-between",
           }}
         >
-          <Stack
+          <RoundedBox
             sx={{
-              width: isTablet ? "47%" : "100%",
+              width: isTablet ? "48.5%" : "100%",
               marginBottom: isTablet ? "0px" : "20px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              backgroundColor: theme.palette.background.paper,
+              padding: "20px",
             }}
           >
             <Typography variant="h3" color={theme.palette.text.strong}>
               Country Distribution of your Users
             </Typography>
-            <Stack sx={{ width: "100%", marginBottom: "20px" }}>
-              <CustomBarGraph
-                data={usersByCountry}
-                tooltipLabelCallback={(tooltipItem) =>
-                  `Users living in ${tooltipItem.label}: ${tooltipItem.raw}`
-                }
-              />
+            <Stack
+              sx={{ width: "100%", height: "300px", marginBottom: "20px" }}
+            >
+              {!loadingGraphs && (
+                <CustomBarGraph
+                  data={usersByCountry}
+                  tooltipLabelCallback={(tooltipItem) =>
+                    `Users living in ${tooltipItem.label}: ${tooltipItem.raw}`
+                  }
+                />
+              )}
             </Stack>
-          </Stack>
-          <Stack sx={{ width: isTablet ? "47%" : "100%" }}>
+          </RoundedBox>
+          <RoundedBox
+            sx={{
+              width: isTablet ? "48.5%" : "100%",
+              marginBottom: isTablet ? "0px" : "20px",
+              display: "flex",
+              alignItems: "center",
+              flexDirection: "column",
+              justifyContent: "center",
+              backgroundColor: theme.palette.background.paper,
+              padding: "20px",
+            }}
+          >
             <Typography variant="h3" color={theme.palette.text.strong}>
               Premium Distribution of your Users
             </Typography>
-            <Stack sx={{ width: "100%", marginBottom: "20px" }}>
-              <CustomSemiCircularGraph
-                data={premiumDistribution}
-                tooltipLabelCallback={(tooltipItem) =>
-                  `${tooltipItem.label} users: ${tooltipItem.raw}`
-                }
-              />
+            <Stack
+              sx={{ width: "100%", height: "300px", marginBottom: "20px" }}
+            >
+              {!loadingGraphs && (
+                <CustomSemiCircularGraph
+                  data={premiumDistribution}
+                  tooltipLabelCallback={(tooltipItem) =>
+                    `${tooltipItem.label} users: ${tooltipItem.raw}`
+                  }
+                />
+              )}
             </Stack>
-          </Stack>
+          </RoundedBox>
         </Stack>
         <Typography
           variant="h3"
@@ -152,6 +201,58 @@ export default function Dashboard() {
           Users
         </Typography>
         <Stack sx={{ width: "100%", marginBottom: "20px" }}>
+          <Stack
+            sx={{
+              flexDirection: !isSmallScreen ? "column" : "row",
+              alignItems: "center",
+              justifyContent: "flex-start",
+              marginBottom: "10px",
+            }}
+          >
+            <Stack
+              sx={{
+                width: !isSmallScreen ? "100%" : "260px",
+                height: "45px",
+                marginBottom: !isSmallScreen ? "10px" : "0px",
+              }}
+            >
+              <TextFilter
+                name={"email-name"}
+                placeholder={"Name or email"}
+                value={nameEmail}
+                onChange={onChangeNameEmail}
+                loading={loading}
+              />
+            </Stack>
+            <Stack
+              sx={{
+                width: !isSmallScreen ? "100%" : "160px",
+                height: "45px",
+                marginLeft: !isSmallScreen ? "0px" : "15px",
+              }}
+            >
+              <SelectFilter
+                value={premium}
+                loading={loading}
+                onChange={onChangePremium}
+                fontSize="14px"
+                options={[
+                  {
+                    value: "all",
+                    label: "Suscription",
+                  },
+                  {
+                    value: "free",
+                    label: "Free",
+                  },
+                  {
+                    value: "premium",
+                    label: "Premium",
+                  },
+                ]}
+              />
+            </Stack>
+          </Stack>
           <TableComponent
             columns={columns}
             data={users}
@@ -168,6 +269,8 @@ export default function Dashboard() {
     </FullLayout>
   );
 }
+
+export default Dashboard;
 
 export async function getServerSideProps(context: GetServerSidePropsContext) {
   const session = await getSession(context);

@@ -1,6 +1,8 @@
 import { Box, Stack, useTheme } from "@mui/material";
 import { Chart, ArcElement, TooltipItem, Tooltip, Legend } from "chart.js/auto";
-import { Doughnut } from "react-chartjs-2";
+import dynamic from "next/dynamic";
+
+const Doughnut = dynamic(() => import("react-chartjs-2").then((mod) => mod.Doughnut), { ssr: false });
 
 Chart.register(ArcElement, Tooltip, Legend);
 
@@ -32,7 +34,7 @@ const CustomSemiCircularGraph = ({ data, tooltipLabelCallback }: Props) => {
 
   return (
     <Stack direction="column" width="100%" height="100%">
-      <Box style={{ height: "340px", padding: '20px 0px' }}>
+      <Box style={{ height: "100%", padding: '20px 0px' }}>
         <Doughnut
           data={chartData}
           options={{

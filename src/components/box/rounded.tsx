@@ -8,7 +8,7 @@ type props = {
   className?: string;
   id?: string;
   onClick?: VoidFunction;
-  innerRef?: RefObject<HTMLDivElement> | null;
+  innerRef?: RefObject<HTMLDivElement | null> | null;
 };
 
 const RoundedBox = ({

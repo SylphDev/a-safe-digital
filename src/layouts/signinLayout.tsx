@@ -30,7 +30,7 @@ const SignInLayout = ({ children }: props) => {
         }}
       >
         <Stack sx={{ height: '280px' }}>
-          <img src="/images/lock2.png" alt="Lock" style={{ maxWidth: '100%', maxHeight: '100%' }} />
+          <Image src="/images/lock2.png" alt="Lock" width={280} height={280} />
         </Stack>
       </Stack>
       <Stack

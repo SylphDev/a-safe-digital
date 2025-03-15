@@ -55,7 +55,6 @@ const SignIn = () => {
       }
       if (res) {
         if (res.ok) {
-          setLoading(false);
           router.push(paths.dashboard);
         }
       }
@@ -63,7 +62,6 @@ const SignIn = () => {
   });
   useEffect(() => {
     if (status === "authenticated") {
-      setLoading(false);
       router.push(paths.dashboard);
     }
   }, [status, router]);

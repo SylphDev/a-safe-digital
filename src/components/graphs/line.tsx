@@ -1,6 +1,8 @@
 import { Box, Stack, useTheme } from "@mui/material";
 import { Chart, LinearScale, ArcElement, TooltipItem } from "chart.js/auto";
-import { Line } from "react-chartjs-2";
+import dynamic from "next/dynamic";
+
+const Line = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), { ssr: false });
 
 Chart.register(LinearScale);
 Chart.register(ArcElement);
@@ -16,7 +18,7 @@ const CustomLineGraph = ({ data, tooltipLabelCallback }: props) => {
 
   return (
     <Stack direction={"column"} width={"100%"} height={"100%"}>
-      <Box style={{ height: "340px", width: "100%" }}>
+      <Box style={{ height: "100%", width: "100%" }}>
         <Line
           id="agesChart"
           data={{
