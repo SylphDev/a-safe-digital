@@ -1,0 +1,7 @@
+.pagination-button:not([disabled]):hover {
+  color: #40c057 !important;
+}
+.pagination-button[disabled] {
+  cursor: default !important;
+  opacity: 0.5;
+}

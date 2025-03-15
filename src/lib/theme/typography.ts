@@ -83,7 +83,7 @@ export const typography = {
     fontWeight: 700,
     lineHeight: 28 / 18,
     fontSize: pxToRem(17),
-    // ...responsiveFontSizes({ sm: 18, md: 18, lg: 18 }),
+    ...responsiveFontSizes({ xs: 14, sm: 14, md: 16, lg: 16 }),
   },
   subtitle1: {
     fontWeight: 400,

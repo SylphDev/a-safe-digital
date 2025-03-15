@@ -23,15 +23,13 @@ declare module "@mui/material/styles/createPalette" {
   }
   interface TypeText {
     white: string;
-    aqua: string;
-    icon: string;
     light: string;
     normal: string;
     medium: string;
     dark: string;
     strong: string;
-    blue: string;
     lighter: string;
+    green: string;
   }
 }
 
@@ -135,15 +133,13 @@ export function palette(mode: "light" | "dark") {
       secondary: GREY[600],
       disabled: GREY[500],
       white: "#FFFFFF",
-      aqua: SECONDARY.main,
-      icon: "#5dceff",
       light: "#E6ECF6",
       lighter: "#D4E1F1",
       normal: "#ACB9C9",
       dark: "#8091a7",
       medium: "#616F81",
       strong: "#2F363E",
-      blue: PRIMARY.main,
+      green: PRIMARY.main,
     },
     background: {
       paper: "#FFFFFF",
@@ -165,15 +161,13 @@ export function palette(mode: "light" | "dark") {
       secondary: GREY[500],
       disabled: GREY[600],
       white: "#FFFFFF",
-      icon: "#FFFFFF",
-      aqua: "#FFFFFF",
       light: "#76879D",
       lighter: "#D4E1F1",
       normal: "#ABC1CE",
       medium: "#DBE6EA",
       dark: "#ebf1f3",
       strong: "#FFFFFF",
-      blue: COMMON.common.white,
+      green: COMMON.common.white,
     },
     background: {
       paper: "#1F232B",

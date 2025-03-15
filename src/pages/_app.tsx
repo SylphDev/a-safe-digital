@@ -1,6 +1,7 @@
 import { ThemeProvider } from "src/lib/theme";
 import { SessionProvider } from "next-auth/react";
 import "../styles/loading-icon.css";
+import "../styles/pagination.css";
 import { AppProps } from "next/app";
 
 function MyApp({ Component, pageProps }: AppProps) {

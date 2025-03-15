@@ -68,7 +68,7 @@ const SignIn = () => {
     }
   }, [status, router]);
   return (
-    <FullLayout>
+    <FullLayout fullHeight fullPadding>
       <SignInLayout>
         <Stack
           sx={{
