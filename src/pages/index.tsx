@@ -23,10 +23,10 @@ const SignIn = () => {
     email: Yup.string().required("Email is required").email("Invalid email"),
     password: Yup.string().required("Password is required"),
   });
-
+  
   const getDefaultValues = {
-    email: "user@example.com",
-    password: "password",
+    email: "",
+    password: "",
   };
 
   const methods = useForm({
@@ -38,33 +38,35 @@ const SignIn = () => {
     handleSubmit,
     formState: { isSubmitting },
   } = methods;
+
   const onSubmit = handleSubmit(async (data) => {
     setLoading(true);
-    setTimeout(async () => {
-      setError("");
-
-      const res = await signIn("credentials", {
-        email: data.email,
-        password: data.password,
-        redirect: false,
-      });
-
-      if (res?.error) {
-        setError(res?.error);
-        setLoading(false);
+    setError("");
+    const res = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
+    if (res?.error) {
+      setError(res?.error);
+      setLoading(false);
+    }
+    if (res) {
+      if (res.ok) {
+        router.push(paths.dashboard);
       }
-      if (res) {
-        if (res.ok) {
-          router.push(paths.dashboard);
-        }
-      }
-    }, 1000);
+    }
   });
+
   useEffect(() => {
     if (status === "authenticated") {
       router.push(paths.dashboard);
     }
   }, [status, router]);
+
+  useEffect(() => {
+    console.log({ session, status });
+  }, [session, status]);
   return (
     <FullLayout fullHeight fullPadding>
       <SignInLayout>

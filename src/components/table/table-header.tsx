@@ -18,18 +18,16 @@ const TableHeader = ({
   size = "12px",
 }: props) => {
   return (
-    <th>
-      <Stack padding={padding} textAlign={align}>
-        <Typography
-          variant="caption"
-          fontSize={size}
-          color={color}
-          fontWeight={weight}
-        >
-          {`${header}`}
-        </Typography>
-      </Stack>
-    </th>
+    <Stack padding={padding} textAlign={align}>
+      <Typography
+        variant="caption"
+        fontSize={size}
+        color={color}
+        fontWeight={weight}
+      >
+        {`${header}`}
+      </Typography>
+    </Stack>
   );
 };
 

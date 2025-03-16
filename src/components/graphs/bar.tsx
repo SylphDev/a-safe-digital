@@ -1,8 +1,16 @@
 import { Box, Stack, useTheme } from "@mui/material";
-import { Chart, LinearScale, CategoryScale, BarElement, TooltipItem } from "chart.js/auto";
+import {
+  Chart,
+  LinearScale,
+  CategoryScale,
+  BarElement,
+  TooltipItem,
+} from "chart.js/auto";
 import dynamic from "next/dynamic";
 
-const Bar = dynamic(() => import("react-chartjs-2").then((mod) => mod.Bar), { ssr: false });
+const Bar = dynamic(() => import("react-chartjs-2").then((mod) => mod.Bar), {
+  ssr: false,
+});
 
 Chart.register(LinearScale, CategoryScale, BarElement);
 
@@ -19,6 +27,7 @@ const CustomBarGraph = ({ data, tooltipLabelCallback }: Props) => {
     <Stack direction="column" width="100%" height="100%">
       <Box style={{ height: "100%", width: "100%" }}>
         <Bar
+          data-testid="bar-chart"
           data={{
             labels: Object.keys(data),
             datasets: [
@@ -51,7 +60,10 @@ const CustomBarGraph = ({ data, tooltipLabelCallback }: Props) => {
               tooltip: {
                 callbacks: {
                   title: () => "",
-                  label: tooltipLabelCallback || ((tooltipItem) => `Users in ${tooltipItem.label}: ${tooltipItem.raw}`),
+                  label:
+                    tooltipLabelCallback ||
+                    ((tooltipItem) =>
+                      `Users in ${tooltipItem.label}: ${tooltipItem.raw}`),
                 },
                 displayColors: false,
               },

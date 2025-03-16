@@ -87,13 +87,13 @@ const TableComponent = ({
             >
               {table.getHeaderGroups().map((headerGroup: any) => (
                 <tr key={headerGroup.id}>
-                  {headerGroup.headers.map((header:any) => {
+                  {headerGroup.headers.map((header: any) => {
                     return (
-                      <Fragment key={header.id}>
+                      <th key={header.id}>
                         {header.isPlaceholder
                           ? null
                           : flexRender(header.column.columnDef.header, header.getContext())}
-                      </Fragment>
+                      </th>
                     );
                   })}
                 </tr>
@@ -110,11 +110,11 @@ const TableComponent = ({
                           : 'none',
                     }}
                   >
-                    {row.getVisibleCells().map((cell: any, rowIndex: any) => {
+                    {row.getVisibleCells().map((cell: any) => {
                       return (
-                        <Fragment key={cell.id}>
+                        <td key={cell.id}>
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                        </Fragment>
+                        </td>
                       );
                     })}
                   </tr>
@@ -136,11 +136,11 @@ const TableComponent = ({
                   <tr key={headerGroup.id}>
                     {headerGroup.headers.map((header: any) => {
                       return (
-                        <Fragment key={header.id}>
+                        <th key={header.id}>
                           {header.isPlaceholder
                             ? null
                             : flexRender(header.column.columnDef.header, header.getContext())}
-                        </Fragment>
+                        </th>
                       );
                     })}
                   </tr>

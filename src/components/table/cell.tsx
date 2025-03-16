@@ -1,4 +1,4 @@
-import { Box, Typography, useTheme } from '@mui/material';
+import { Box, Typography, useTheme } from "@mui/material";
 
 type props = {
   text: string | number;
@@ -14,44 +14,45 @@ type props = {
 const Cell = ({
   text,
   border = true,
-  width = 'fit-content',
-  maxWidth = 'none',
-  minWidth = 'auto',
-  align = 'center',
+  width = "100%",
+  maxWidth = "none",
+  minWidth = "auto",
+  align = "center",
   weight = 400,
-  size = '12px',
+  size = "12px",
 }: props) => {
   const theme = useTheme();
   return (
-    <td
-      style={{
-        textAlign: 'center',
+    <Box
+      width={"100%"}
+      sx={{
+        overflow: "hidden",
+        textOverflow: "ellipsis",
+        whiteSpace: "nowrap",
+        textAlign: align,
         width: width,
         minWidth: minWidth,
         maxWidth: maxWidth,
-        padding: '9px',
-        borderRight: border ? `1px solid ${theme.palette.background.paper}` : 'none',
+        padding: "9px",
+        borderRight: border
+          ? `1px solid ${theme.palette.background.paper}`
+          : "none",
       }}
     >
-      <Box
-        width={'100%'}
+      <Typography
+        variant="caption"
+        fontSize={size}
+        color={theme.palette.text.medium}
+        fontWeight={weight}
         sx={{
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          whiteSpace: 'nowrap',
-          textAlign: align,
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+          whiteSpace: "nowrap",
         }}
       >
-        <Typography
-          variant="caption"
-          fontSize={size}
-          color={theme.palette.text.medium}
-          fontWeight={weight}
-        >
-          {text}
-        </Typography>
-      </Box>
-    </td>
+        {text}
+      </Typography>
+    </Box>
   );
 };
 

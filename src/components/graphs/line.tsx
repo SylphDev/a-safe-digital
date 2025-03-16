@@ -20,7 +20,7 @@ const CustomLineGraph = ({ data, tooltipLabelCallback }: props) => {
     <Stack direction={"column"} width={"100%"} height={"100%"}>
       <Box style={{ height: "100%", width: "100%" }}>
         <Line
-          id="agesChart"
+          data-testid="line-chart"
           data={{
             datasets: [
               {

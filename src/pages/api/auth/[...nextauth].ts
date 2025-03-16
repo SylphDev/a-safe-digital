@@ -42,19 +42,29 @@ export default NextAuth({
       },
     }),
   ],
-  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60,
+  },
   callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
     async redirect({ url, baseUrl }) {
       if (url.startsWith("/dashboard")) {
         return `${baseUrl}${url}`;
       }
       return baseUrl;
     },
-    session: async ({ session, token }) => {
+    async session({ session, token }) {
       if (session.user) {
         session.user.name = token.name;
       }
       return session;
     },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 });

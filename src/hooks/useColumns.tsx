@@ -21,7 +21,7 @@ export const useColumns = () => {
       header: () => (
         <TableHeader color={theme.palette.common.white} header={"Name"} />
       ),
-      cell: (info) => <Cell text={info.getValue() as string} maxWidth={75} />,
+      cell: (info) => <Cell text={info.getValue() as string} minWidth={75} />,
     },
     {
       id: "email",
@@ -29,7 +29,7 @@ export const useColumns = () => {
       header: () => (
         <TableHeader color={theme.palette.common.white} header={"Email"} />
       ),
-      cell: (info) => <Cell text={info.getValue() as string} maxWidth={75} />,
+      cell: (info) => <Cell text={info.getValue() as string} minWidth={75} maxWidth={400} />,
     },
     {
       id: "age",
@@ -37,7 +37,7 @@ export const useColumns = () => {
       header: () => (
         <TableHeader color={theme.palette.common.white} header={"Age"} />
       ),
-      cell: (info) => <Cell text={info.getValue() as string} maxWidth={75} />,
+      cell: (info) => <Cell text={info.getValue() as string} maxWidth={100} />,
     },
     {
       id: "country",
@@ -45,7 +45,7 @@ export const useColumns = () => {
       header: () => (
         <TableHeader color={theme.palette.common.white} header={"Country"} />
       ),
-      cell: (info) => <Cell text={info.getValue() as string} maxWidth={75} />,
+      cell: (info) => <Cell text={info.getValue() as string} minWidth={75} />,
     },
     {
       id: "premium",
@@ -55,7 +55,7 @@ export const useColumns = () => {
       ),
       cell: (info) => {
         const value = info.getValue();
-        return <Cell text={value ? "Yes" : "No"} maxWidth={75} />;
+        return <Cell text={value ? "Yes" : "No"} minWidth={75} />;
       },
     },
   ];

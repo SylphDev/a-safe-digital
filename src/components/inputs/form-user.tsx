@@ -6,9 +6,16 @@ type Props = TextFieldProps & {
   onBlur?: Function;
 };
 
-const FormUserInput = ({ name, helperText, type, onBlur, ...other }: Props) => {
+const FormUserInput = ({
+  name,
+  helperText,
+  type,
+  onBlur,
+  label,
+  id = name,
+  ...other
+}: Props) => {
   const { control } = useFormContext();
-
   return (
     <Controller
       name={name}
@@ -17,6 +24,7 @@ const FormUserInput = ({ name, helperText, type, onBlur, ...other }: Props) => {
         <TextField
           {...field}
           fullWidth
+          id={id}
           variant="standard"
           type={type}
           value={type === "number" && field.value === 0 ? "" : field.value}
@@ -28,6 +36,7 @@ const FormUserInput = ({ name, helperText, type, onBlur, ...other }: Props) => {
             }
           }}
           error={!!error}
+          label={label}
           helperText={error ? error?.message : helperText}
           onBlur={() => {
             if (onBlur) {

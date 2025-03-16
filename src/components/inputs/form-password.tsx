@@ -16,7 +16,8 @@ type Props = TextFieldProps & {
 const FormPasswordInput = ({
   name,
   showButton,
-  id = '',
+  label,
+  id = name,
   autocomplete = 'new-password',
   helperText,
   type,
@@ -76,6 +77,7 @@ const FormPasswordInput = ({
               }
             }}
             error={!!error}
+            label={label}
             helperText={error ? error?.message : helperText}
             autoComplete={autocomplete}
             inputProps={{

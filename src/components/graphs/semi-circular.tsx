@@ -37,6 +37,7 @@ const CustomSemiCircularGraph = ({ data, tooltipLabelCallback }: Props) => {
       <Box style={{ height: "100%", padding: '20px 0px' }}>
         <Doughnut
           data={chartData}
+          data-testid="semi-circular-chart"
           options={{
             responsive: true,
             maintainAspectRatio: false,
