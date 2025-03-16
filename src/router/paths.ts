@@ -1,4 +1,5 @@
 export const paths = {
     signin: '/',
-    dashboard: '/dashboard'
+    dashboard: '/dashboard',
+    error: '/error'
 }

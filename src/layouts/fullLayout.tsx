@@ -58,7 +58,7 @@ const FullLayout = ({
       >
         <Stack>
           {status === "authenticated" &&
-            router.pathname !== "/" &&
+            router.pathname !== paths.signin &&
             session &&
             session.user && (
               <Typography variant="h6">Hello, {session.user.name}!</Typography>
@@ -71,7 +71,7 @@ const FullLayout = ({
             justifyContent: "flex-end",
           }}
         >
-          {status === "authenticated" && router.pathname !== "/" && (
+          {status === "authenticated" && router.pathname !== paths.signin && (
             <Stack sx={{ height: "100%", marginRight: "20px", width: '65px' }}>
               <SignOut onClick={handleSignOut} status={status} />
             </Stack>

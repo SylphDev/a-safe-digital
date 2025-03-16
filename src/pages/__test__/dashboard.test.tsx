@@ -57,7 +57,7 @@ describe("Dashboard Page", () => {
         <CssBaseline />
         <SessionProvider
           session={{
-            user: { name: "Test User" },
+            user: { name: "Test User", id: '23' },
             expires: "9999-12-31T23:59:59.999Z",
           }}
         >
@@ -89,7 +89,7 @@ describe("Dashboard Page", () => {
         <CssBaseline />
         <SessionProvider
           session={{
-            user: { name: "Test User" },
+            user: { name: "Test User", id: '23' },
             expires: "9999-12-31T23:59:59.999Z",
           }}
         >

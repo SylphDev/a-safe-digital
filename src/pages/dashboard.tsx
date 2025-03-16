@@ -73,7 +73,6 @@ const Dashboard = () => {
     data: users,
     loading,
     totalPages,
-    setLoading,
   } = usePaginatedData<UserData>("/api/users", {
     page,
     limit: 10,
@@ -93,7 +92,7 @@ const Dashboard = () => {
         setUsersByCountry(countryRes.data);
         setPremiumDistribution(premiumRes.data);
       } catch (error) {
-        router.push(paths.signin);
+        router.push(paths.error);
       }
       setLoadingGraphs(false);
     };
