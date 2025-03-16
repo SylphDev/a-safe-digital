@@ -103,7 +103,7 @@ const SignIn = () => {
               styles={{ width: "100%", height: "100%" }}
             >
               <Stack sx={{ width: "100%", marginBottom: "20px" }}>
-                <FormUserInput name="email" label={"Email"} />
+                <FormUserInput name="email" label={"Email"} placeholder="user@example.com" />
               </Stack>
               <Stack sx={{ width: "100%", marginBottom: "60px" }}>
                 <FormPasswordInput
@@ -111,6 +111,7 @@ const SignIn = () => {
                   name="password"
                   label={"Password"}
                   showButton={true}
+                  placeholder="password"
                 />
               </Stack>
               <LoadingButton
