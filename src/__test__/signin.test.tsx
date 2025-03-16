@@ -1,6 +1,6 @@
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { useSession, signIn, SessionProvider } from "next-auth/react";
-import { ThemeProvider } from "src/lib/theme"; // Import your custom ThemeProvider
+import { ThemeProvider } from "src/lib/theme";
 import { CssBaseline } from "@mui/material";
 import SignIn from "src/pages";
 

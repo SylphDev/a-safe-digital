@@ -1,5 +1,5 @@
 describe("Authentication", () => {
-  it("logs in with correct credentials", () => {
+  it("Logs in with correct credentials", () => {
     cy.visit("/");
     cy.get("input[name=email]").type("user@example.com");
     cy.get("input[name=password]").type("password");
@@ -7,7 +7,7 @@ describe("Authentication", () => {
     cy.url().should("include", "/dashboard");
   });
 
-  it("fails with incorrect credentials", () => {
+  it("Fails with incorrect credentials", () => {
     cy.visit("/");
     cy.get("input[name=email]").type("wrong@example.com");
     cy.get("input[name=password]").type("wrongpassword");
@@ -15,7 +15,7 @@ describe("Authentication", () => {
     cy.contains("Invalid email or password").should("be.visible");
   });
 
-  it("redirects to login when accessing protected page without authentication", () => {
+  it("Redirects to login when accessing protected page without authentication", () => {
     cy.visit("/dashboard");
     cy.url().should("eq", `${Cypress.config("baseUrl")}/`);
   });
