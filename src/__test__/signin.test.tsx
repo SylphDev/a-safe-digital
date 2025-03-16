@@ -1,9 +1,8 @@
 import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { useSession, signIn, SessionProvider } from "next-auth/react";
-import { useRouter } from "next/router";
 import { ThemeProvider } from "src/lib/theme"; // Import your custom ThemeProvider
 import { CssBaseline } from "@mui/material";
-import SignIn from "..";
+import SignIn from "src/pages";
 
 jest.mock("next-auth/react", () => ({
   useSession: jest.fn(),

@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import { usePaginatedData } from "../usePaginatedData";
+import { usePaginatedData } from "src/hooks/usePaginatedData";
 
 beforeEach(() => {
   jest.resetAllMocks();

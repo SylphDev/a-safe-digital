@@ -1,5 +1,5 @@
 import { render, screen, act } from "@testing-library/react";
-import CustomBarGraph from "../bar";
+import CustomBarGraph from "../components/graphs/bar";
 
 describe("CustomBarGraph", () => {
   it("Renders graph without crashing", async () => {

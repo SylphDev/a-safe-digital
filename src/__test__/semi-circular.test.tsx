@@ -1,5 +1,5 @@
 import { render, screen, act } from "@testing-library/react";
-import CustomSemiCircularGraph from "../semi-circular";
+import CustomSemiCircularGraph from "../components/graphs/semi-circular";
 
 describe("CustomSemiCircularGraph", () => {
   it("Renders graph without crashing", async () => {

@@ -1,5 +1,5 @@
 import { render, screen, act } from "@testing-library/react";
-import CustomLineGraph from "../line";
+import CustomLineGraph from "../components/graphs/line";
 
 describe("CustomLineGraph", () => {
   it("Renders graph without crashing", async () => {

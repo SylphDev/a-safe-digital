@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
-import TableComponent from "..";
 import { ColumnDef } from "@tanstack/react-table";
+import TableComponent from "src/components/table";
 
 describe("TableComponent", () => {
   test("Renders a table with correct data", () => {

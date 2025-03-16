@@ -1,11 +1,11 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { SessionProvider } from "next-auth/react";
-import Dashboard, { getServerSideProps } from "../dashboard";
 import axios from "axios";
 import { getSession } from "next-auth/react";
 import userEvent from "@testing-library/user-event";
 import { ThemeProvider } from "src/lib/theme";
 import { CssBaseline } from "@mui/material";
+import Dashboard, { getServerSideProps } from "src/pages/dashboard";
 
 jest.mock("next/router", () => require("next-router-mock"));
 
