@@ -9,9 +9,10 @@ Chart.register(ArcElement, Tooltip, Legend);
 type Props = {
   data: Record<string, number>;
   tooltipLabelCallback?: (tooltipItem: TooltipItem<"doughnut">) => string;
+  id?: string;
 };
 
-const CustomSemiCircularGraph = ({ data, tooltipLabelCallback }: Props) => {
+const CustomSemiCircularGraph = ({ data, tooltipLabelCallback, id="semi-circular-graph" }: Props) => {
   const theme = useTheme();
   const bgColor: string[] = ["#40c057", "#40c090"];
   const chartData = {
@@ -38,6 +39,7 @@ const CustomSemiCircularGraph = ({ data, tooltipLabelCallback }: Props) => {
         <Doughnut
           data={chartData}
           data-testid="semi-circular-chart"
+          id={id}
           options={{
             responsive: true,
             maintainAspectRatio: false,

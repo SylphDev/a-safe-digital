@@ -14,4 +14,9 @@ describe("Authentication", () => {
     cy.get("button[type=submit]").click();
     cy.contains("Invalid email or password").should("be.visible");
   });
+
+  it("redirects to login when accessing protected page without authentication", () => {
+    cy.visit("/dashboard");
+    cy.url().should("eq", `${Cypress.config("baseUrl")}/`);
+  });
 });

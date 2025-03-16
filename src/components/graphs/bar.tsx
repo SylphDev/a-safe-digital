@@ -17,9 +17,14 @@ Chart.register(LinearScale, CategoryScale, BarElement);
 type Props = {
   data: Record<string, number>;
   tooltipLabelCallback?: (tooltipItem: TooltipItem<"bar">) => string;
+  id?: string;
 };
 
-const CustomBarGraph = ({ data, tooltipLabelCallback }: Props) => {
+const CustomBarGraph = ({
+  data,
+  tooltipLabelCallback,
+  id = "bar-graph",
+}: Props) => {
   const theme = useTheme();
   const bgColor: string = "#40c057";
 
@@ -28,6 +33,7 @@ const CustomBarGraph = ({ data, tooltipLabelCallback }: Props) => {
       <Box style={{ height: "100%", width: "100%" }}>
         <Bar
           data-testid="bar-chart"
+          id={id}
           data={{
             labels: Object.keys(data),
             datasets: [

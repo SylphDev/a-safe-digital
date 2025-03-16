@@ -146,6 +146,7 @@ const Dashboard = () => {
               >
                 <CustomLineGraph
                   data={ageDistribution}
+                  id={'age-graph'}
                   tooltipLabelCallback={(tooltipItem) =>
                     `Users aged ${tooltipItem.label}: ${tooltipItem.raw}`
                   }
@@ -208,6 +209,7 @@ const Dashboard = () => {
                 >
                   <CustomBarGraph
                     data={usersByCountry}
+                    id={'country-graph'}
                     tooltipLabelCallback={(tooltipItem) =>
                       `Users living in ${tooltipItem.label}: ${tooltipItem.raw}`
                     }
@@ -261,6 +263,7 @@ const Dashboard = () => {
                 >
                   <CustomSemiCircularGraph
                     data={premiumDistribution}
+                    id={'premium-graph'}
                     tooltipLabelCallback={(tooltipItem) =>
                       `${tooltipItem.label} users: ${tooltipItem.raw}`
                     }

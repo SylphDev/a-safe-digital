@@ -2,7 +2,9 @@ import { Box, Stack, useTheme } from "@mui/material";
 import { Chart, LinearScale, ArcElement, TooltipItem } from "chart.js/auto";
 import dynamic from "next/dynamic";
 
-const Line = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), { ssr: false });
+const Line = dynamic(() => import("react-chartjs-2").then((mod) => mod.Line), {
+  ssr: false,
+});
 
 Chart.register(LinearScale);
 Chart.register(ArcElement);
@@ -10,9 +12,14 @@ Chart.register(ArcElement);
 type props = {
   data: Record<number | string, number>;
   tooltipLabelCallback?: (tooltipItem: TooltipItem<"line">) => string;
+  id?: string;
 };
 
-const CustomLineGraph = ({ data, tooltipLabelCallback }: props) => {
+const CustomLineGraph = ({
+  data,
+  tooltipLabelCallback,
+  id = "line-graph"
+}: props) => {
   const theme = useTheme();
   const bgColor: string = "#40c057";
 
@@ -21,6 +28,7 @@ const CustomLineGraph = ({ data, tooltipLabelCallback }: props) => {
       <Box style={{ height: "100%", width: "100%" }}>
         <Line
           data-testid="line-chart"
+          id={id}
           data={{
             datasets: [
               {
