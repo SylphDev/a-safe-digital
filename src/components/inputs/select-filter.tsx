@@ -1,5 +1,5 @@
 import { Box, Stack, Typography, useTheme } from "@mui/material";
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import RoundedBox from "../box/rounded";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
