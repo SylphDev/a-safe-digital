@@ -1,6 +1,5 @@
 import { NextPage } from "next";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import FullLayout from "src/layouts/fullLayout";
 import { signOut } from "next-auth/react";
 import ErrorIcon from "@mui/icons-material/Error";
