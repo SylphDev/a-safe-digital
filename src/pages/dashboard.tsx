@@ -16,6 +16,7 @@ import { UserData } from "src/data/mockUser";
 import { usePaginatedData } from "src/hooks/usePaginatedData";
 import dynamic from "next/dynamic";
 import LoadingIcon from "src/components/loading-icon";
+import Head from "next/head";
 
 const CustomLineGraph = dynamic(() => import("src/components/graphs/line"), {
   ssr: false,
@@ -104,257 +105,266 @@ const Dashboard = () => {
   }, [isTablet, isSmallScreen]);
 
   return (
-    <FullLayout>
-      <Stack>
-        <Stack
-          sx={{
-            width: "100%",
-            marginBottom: "40px",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            backgroundColor: theme.palette.background.paper,
-            padding: "20px",
-          }}
-        >
-          <Typography
-            variant="h3"
-            color={theme.palette.text.strong}
-            sx={{ marginBottom: "10px" }}
-          >
-            Age Distribution of your Users
-          </Typography>
+    <>
+      <Head>
+        <title>Dashboard | AS Test</title>
+        <meta
+          name="description"
+          content="Your Dashboard for this test"
+        />
+      </Head>
+      <FullLayout>
+        <Stack>
           <Stack
             sx={{
               width: "100%",
-              height: "300px",
+              marginBottom: "40px",
+              display: "flex",
+              flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
+              backgroundColor: theme.palette.background.paper,
+              padding: "20px",
             }}
           >
-            {!loadingGraphs && (
-              <Suspense
-                fallback={
+            <Typography
+              variant="h3"
+              color={theme.palette.text.strong}
+              sx={{ marginBottom: "10px" }}
+            >
+              Age Distribution of your Users
+            </Typography>
+            <Stack
+              sx={{
+                width: "100%",
+                height: "300px",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {!loadingGraphs && (
+                <Suspense
+                  fallback={
+                    <LoadingIcon
+                      size={8}
+                      border={0.9}
+                      firstColor={theme.palette.primary.light}
+                      secondColor={theme.palette.primary.light}
+                    />
+                  }
+                >
+                  <CustomLineGraph
+                    data={ageDistribution}
+                    id={"age-graph"}
+                    tooltipLabelCallback={(tooltipItem) =>
+                      `Users aged ${tooltipItem.label}: ${tooltipItem.raw}`
+                    }
+                  />
+                </Suspense>
+              )}
+              {loadingGraphs && (
+                <LoadingIcon
+                  size={8}
+                  border={0.9}
+                  firstColor={theme.palette.primary.light}
+                  secondColor={theme.palette.primary.light}
+                />
+              )}
+            </Stack>
+          </Stack>
+          <Stack
+            sx={{
+              width: "100%",
+              marginBottom: "20px",
+              flexDirection: isTablet ? "row" : "column",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <RoundedBox
+              sx={{
+                width: isTablet ? "48.5%" : "100%",
+                marginBottom: isTablet ? "0px" : "20px",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                backgroundColor: theme.palette.background.paper,
+                padding: "20px",
+              }}
+            >
+              <Typography variant="h3" color={theme.palette.text.strong}>
+                Country Distribution of your Users
+              </Typography>
+              <Stack
+                sx={{
+                  width: "100%",
+                  height: "300px",
+                  marginBottom: "20px",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {!loadingGraphs && (
+                  <Suspense
+                    fallback={
+                      <LoadingIcon
+                        size={8}
+                        border={0.9}
+                        firstColor={theme.palette.primary.light}
+                        secondColor={theme.palette.primary.light}
+                      />
+                    }
+                  >
+                    <CustomBarGraph
+                      data={usersByCountry}
+                      id={"country-graph"}
+                      tooltipLabelCallback={(tooltipItem) =>
+                        `Users living in ${tooltipItem.label}: ${tooltipItem.raw}`
+                      }
+                    />
+                  </Suspense>
+                )}
+                {loadingGraphs && (
                   <LoadingIcon
                     size={8}
                     border={0.9}
                     firstColor={theme.palette.primary.light}
                     secondColor={theme.palette.primary.light}
                   />
-                }
+                )}
+              </Stack>
+            </RoundedBox>
+            <RoundedBox
+              sx={{
+                width: isTablet ? "48.5%" : "100%",
+                marginBottom: isTablet ? "0px" : "20px",
+                display: "flex",
+                alignItems: "center",
+                flexDirection: "column",
+                justifyContent: "center",
+                backgroundColor: theme.palette.background.paper,
+                padding: "20px",
+              }}
+            >
+              <Typography variant="h3" color={theme.palette.text.strong}>
+                Premium Distribution of your Users
+              </Typography>
+              <Stack
+                sx={{
+                  width: "100%",
+                  height: "300px",
+                  marginBottom: "20px",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
               >
-                <CustomLineGraph
-                  data={ageDistribution}
-                  id={'age-graph'}
-                  tooltipLabelCallback={(tooltipItem) =>
-                    `Users aged ${tooltipItem.label}: ${tooltipItem.raw}`
-                  }
+                {!loadingGraphs && (
+                  <Suspense
+                    fallback={
+                      <LoadingIcon
+                        size={8}
+                        border={0.9}
+                        firstColor={theme.palette.primary.light}
+                        secondColor={theme.palette.primary.light}
+                      />
+                    }
+                  >
+                    <CustomSemiCircularGraph
+                      data={premiumDistribution}
+                      id={"premium-graph"}
+                      tooltipLabelCallback={(tooltipItem) =>
+                        `${tooltipItem.label} users: ${tooltipItem.raw}`
+                      }
+                    />
+                  </Suspense>
+                )}
+                {loadingGraphs && (
+                  <LoadingIcon
+                    size={8}
+                    border={0.9}
+                    firstColor={theme.palette.primary.light}
+                    secondColor={theme.palette.primary.light}
+                  />
+                )}
+              </Stack>
+            </RoundedBox>
+          </Stack>
+          <Typography
+            variant="h3"
+            color={theme.palette.text.strong}
+            sx={{ marginBottom: "10px" }}
+          >
+            Users
+          </Typography>
+          <Stack sx={{ width: "100%" }}>
+            <Stack
+              sx={{
+                flexDirection: !isSmallScreen ? "column" : "row",
+                alignItems: "center",
+                justifyContent: "flex-start",
+                marginBottom: "10px",
+              }}
+            >
+              <Stack
+                sx={{
+                  width: !isSmallScreen ? "100%" : "260px",
+                  height: "45px",
+                  marginBottom: !isSmallScreen ? "10px" : "0px",
+                }}
+              >
+                <TextFilter
+                  name={"email-name"}
+                  placeholder={"Name or email"}
+                  value={nameEmail}
+                  onChange={onChangeNameEmail}
+                  loading={loading}
                 />
-              </Suspense>
-            )}
-            {loadingGraphs && (
-              <LoadingIcon
-                size={8}
-                border={0.9}
-                firstColor={theme.palette.primary.light}
-                secondColor={theme.palette.primary.light}
-              />
-            )}
+              </Stack>
+              <Stack
+                sx={{
+                  width: !isSmallScreen ? "100%" : "160px",
+                  height: "45px",
+                  marginLeft: !isSmallScreen ? "0px" : "15px",
+                }}
+              >
+                <SelectFilter
+                  value={premium}
+                  loading={loading}
+                  onChange={onChangePremium}
+                  fontSize="14px"
+                  options={[
+                    {
+                      value: "all",
+                      label: "Suscription",
+                    },
+                    {
+                      value: "free",
+                      label: "Free",
+                    },
+                    {
+                      value: "premium",
+                      label: "Premium",
+                    },
+                  ]}
+                />
+              </Stack>
+            </Stack>
+            <TableComponent
+              columns={columns}
+              data={users}
+              renderSubComponent={() => {}}
+              visibility={visibility}
+              onChangeVisibility={setVisibility}
+              canExpand={() => false}
+              page={page}
+              totalPages={totalPages}
+              onChangePage={setPage}
+            />
           </Stack>
         </Stack>
-        <Stack
-          sx={{
-            width: "100%",
-            marginBottom: "20px",
-            flexDirection: isTablet ? "row" : "column",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <RoundedBox
-            sx={{
-              width: isTablet ? "48.5%" : "100%",
-              marginBottom: isTablet ? "0px" : "20px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              backgroundColor: theme.palette.background.paper,
-              padding: "20px",
-            }}
-          >
-            <Typography variant="h3" color={theme.palette.text.strong}>
-              Country Distribution of your Users
-            </Typography>
-            <Stack
-              sx={{
-                width: "100%",
-                height: "300px",
-                marginBottom: "20px",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              {!loadingGraphs && (
-                <Suspense
-                  fallback={
-                    <LoadingIcon
-                      size={8}
-                      border={0.9}
-                      firstColor={theme.palette.primary.light}
-                      secondColor={theme.palette.primary.light}
-                    />
-                  }
-                >
-                  <CustomBarGraph
-                    data={usersByCountry}
-                    id={'country-graph'}
-                    tooltipLabelCallback={(tooltipItem) =>
-                      `Users living in ${tooltipItem.label}: ${tooltipItem.raw}`
-                    }
-                  />
-                </Suspense>
-              )}
-              {loadingGraphs && (
-                <LoadingIcon
-                  size={8}
-                  border={0.9}
-                  firstColor={theme.palette.primary.light}
-                  secondColor={theme.palette.primary.light}
-                />
-              )}
-            </Stack>
-          </RoundedBox>
-          <RoundedBox
-            sx={{
-              width: isTablet ? "48.5%" : "100%",
-              marginBottom: isTablet ? "0px" : "20px",
-              display: "flex",
-              alignItems: "center",
-              flexDirection: "column",
-              justifyContent: "center",
-              backgroundColor: theme.palette.background.paper,
-              padding: "20px",
-            }}
-          >
-            <Typography variant="h3" color={theme.palette.text.strong}>
-              Premium Distribution of your Users
-            </Typography>
-            <Stack
-              sx={{
-                width: "100%",
-                height: "300px",
-                marginBottom: "20px",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              {!loadingGraphs && (
-                <Suspense
-                  fallback={
-                    <LoadingIcon
-                      size={8}
-                      border={0.9}
-                      firstColor={theme.palette.primary.light}
-                      secondColor={theme.palette.primary.light}
-                    />
-                  }
-                >
-                  <CustomSemiCircularGraph
-                    data={premiumDistribution}
-                    id={'premium-graph'}
-                    tooltipLabelCallback={(tooltipItem) =>
-                      `${tooltipItem.label} users: ${tooltipItem.raw}`
-                    }
-                  />
-                </Suspense>
-              )}
-              {loadingGraphs && (
-                <LoadingIcon
-                  size={8}
-                  border={0.9}
-                  firstColor={theme.palette.primary.light}
-                  secondColor={theme.palette.primary.light}
-                />
-              )}
-            </Stack>
-          </RoundedBox>
-        </Stack>
-        <Typography
-          variant="h3"
-          color={theme.palette.text.strong}
-          sx={{ marginBottom: "10px" }}
-        >
-          Users
-        </Typography>
-        <Stack sx={{ width: "100%" }}>
-          <Stack
-            sx={{
-              flexDirection: !isSmallScreen ? "column" : "row",
-              alignItems: "center",
-              justifyContent: "flex-start",
-              marginBottom: "10px",
-            }}
-          >
-            <Stack
-              sx={{
-                width: !isSmallScreen ? "100%" : "260px",
-                height: "45px",
-                marginBottom: !isSmallScreen ? "10px" : "0px",
-              }}
-            >
-              <TextFilter
-                name={"email-name"}
-                placeholder={"Name or email"}
-                value={nameEmail}
-                onChange={onChangeNameEmail}
-                loading={loading}
-              />
-            </Stack>
-            <Stack
-              sx={{
-                width: !isSmallScreen ? "100%" : "160px",
-                height: "45px",
-                marginLeft: !isSmallScreen ? "0px" : "15px",
-              }}
-            >
-              <SelectFilter
-                value={premium}
-                loading={loading}
-                onChange={onChangePremium}
-                fontSize="14px"
-                options={[
-                  {
-                    value: "all",
-                    label: "Suscription",
-                  },
-                  {
-                    value: "free",
-                    label: "Free",
-                  },
-                  {
-                    value: "premium",
-                    label: "Premium",
-                  },
-                ]}
-              />
-            </Stack>
-          </Stack>
-          <TableComponent
-            columns={columns}
-            data={users}
-            renderSubComponent={() => {}}
-            visibility={visibility}
-            onChangeVisibility={setVisibility}
-            canExpand={() => false}
-            page={page}
-            totalPages={totalPages}
-            onChangePage={setPage}
-          />
-        </Stack>
-      </Stack>
-    </FullLayout>
+      </FullLayout>
+    </>
   );
 };
 

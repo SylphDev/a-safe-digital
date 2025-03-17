@@ -12,6 +12,7 @@ import LoadingButton from "src/components/buttons/loading";
 import { useRouter } from "next/router";
 import { signIn, useSession } from "next-auth/react";
 import { paths } from "src/router/paths";
+import Head from "next/head";
 
 const SignIn = () => {
   const theme = useTheme();
@@ -23,7 +24,7 @@ const SignIn = () => {
     email: Yup.string().required("Email is required").email("Invalid email"),
     password: Yup.string().required("Password is required"),
   });
-  
+
   const getDefaultValues = {
     email: "",
     password: "",
@@ -64,95 +65,105 @@ const SignIn = () => {
     }
   }, [status, router]);
 
-  useEffect(() => {
-    console.log({ session, status });
-  }, [session, status]);
   return (
-    <FullLayout fullHeight fullPadding>
-      <SignInLayout>
-        <Stack
-          sx={{
-            width: "100%",
-            height: "100%",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
+    <>
+      <Head>
+        <title>Sign In | AS Test</title>
+        <meta
+          name="description"
+          content="Login to A-Safe Digital Test to access your dashboard."
+        />
+      </Head>
+      <FullLayout fullHeight fullPadding>
+        <SignInLayout>
           <Stack
             sx={{
-              width: "70%",
+              width: "100%",
+              height: "100%",
               alignItems: "center",
               justifyContent: "center",
-              flexDirection: "column",
             }}
           >
-            <Typography
-              variant="h1"
+            <Stack
               sx={{
-                color: theme.palette.text.strong,
-                textAlign: "center",
-                marginBottom: "40px",
+                width: "70%",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
               }}
             >
-              Welcome to A-Safe Technical Test
-            </Typography>
-            <FormProvider
-              id={"login-form"}
-              methods={methods}
-              onSubmit={onSubmit}
-              styles={{ width: "100%", height: "100%" }}
-            >
-              <Stack sx={{ width: "100%", marginBottom: "20px" }}>
-                <FormUserInput name="email" label={"Email"} placeholder="user@example.com" />
-              </Stack>
-              <Stack sx={{ width: "100%", marginBottom: "60px" }}>
-                <FormPasswordInput
-                  autocomplete="current-password"
-                  name="password"
-                  label={"Password"}
-                  showButton={true}
-                  placeholder="password"
-                />
-              </Stack>
-              <LoadingButton
-                size="medium"
-                disableRipple
-                type="submit"
+              <Typography
+                variant="h1"
                 sx={{
-                  width: "100%",
-                  height: "45px",
-                  fontWeight: 600,
-                  pointerEvents: isSubmitting || loading ? "none" : "auto",
-                  opacity: isSubmitting || loading ? "0.5" : "1",
-                }}
-                text={"Login"}
-                loading={isSubmitting || loading}
-                id={"login-button"}
-              />
-              <Stack
-                sx={{
-                  height: "24px",
-                  width: "100%",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginBottom: "10px",
-                  marginTop: "5px",
+                  color: theme.palette.text.strong,
+                  textAlign: "center",
+                  marginBottom: "40px",
                 }}
               >
-                {error && (
-                  <Typography
-                    variant="caption"
-                    color={theme.palette.error.main}
-                  >
-                    {error}
-                  </Typography>
-                )}
-              </Stack>
-            </FormProvider>
+                Welcome to A-Safe Technical Test
+              </Typography>
+              <FormProvider
+                id={"login-form"}
+                methods={methods}
+                onSubmit={onSubmit}
+                styles={{ width: "100%", height: "100%" }}
+              >
+                <Stack sx={{ width: "100%", marginBottom: "20px" }}>
+                  <FormUserInput
+                    name="email"
+                    label={"Email"}
+                    placeholder="user@example.com"
+                  />
+                </Stack>
+                <Stack sx={{ width: "100%", marginBottom: "60px" }}>
+                  <FormPasswordInput
+                    autocomplete="current-password"
+                    name="password"
+                    label={"Password"}
+                    showButton={true}
+                    placeholder="password"
+                  />
+                </Stack>
+                <LoadingButton
+                  size="medium"
+                  disableRipple
+                  type="submit"
+                  sx={{
+                    width: "100%",
+                    height: "45px",
+                    fontWeight: 600,
+                    pointerEvents: isSubmitting || loading ? "none" : "auto",
+                    opacity: isSubmitting || loading ? "0.5" : "1",
+                  }}
+                  text={"Login"}
+                  loading={isSubmitting || loading}
+                  id={"login-button"}
+                />
+                <Stack
+                  sx={{
+                    height: "24px",
+                    width: "100%",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    marginBottom: "10px",
+                    marginTop: "5px",
+                  }}
+                >
+                  {error && (
+                    <Typography
+                      variant="caption"
+                      color={theme.palette.error.main}
+                    >
+                      {error}
+                    </Typography>
+                  )}
+                </Stack>
+              </FormProvider>
+            </Stack>
           </Stack>
-        </Stack>
-      </SignInLayout>
-    </FullLayout>
+        </SignInLayout>
+      </FullLayout>
+    </>
   );
 };
 

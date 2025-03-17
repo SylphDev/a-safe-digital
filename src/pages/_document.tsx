@@ -20,6 +20,7 @@ export default function Document(): JSX.Element {
           rel="stylesheet"
           media="print"
         />
+        <link rel="icon" type="image/png" href="/favicon.png" />
         <noscript>
           <link
             href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;800&display=swap"
